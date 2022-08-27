@@ -20,9 +20,13 @@ function CartForm() {
           class="default-input w-full"
           placeholder="e.g. 1234 5678 9123 0000"
           onInput={(ev) => {
-            setCardStore('number', ev.currentTarget.value);
+            ev.preventDefault();
+            const slimValue = ev.currentTarget.value.replaceAll(' ', '');
+            const slice = slimValue.slice(0, 16);
+            setCardStore('number', slice);
+
+            ev.currentTarget.value = (slice.match(/.{1,4}/g) || []).join(' ');
           }}
-          value={cardStore.number}
         />
       </div>
       <div>
@@ -32,17 +36,19 @@ function CartForm() {
             class="default-input w-1/2"
             placeholder="MM"
             onInput={(ev) => {
-              setCardStore('month', ev.currentTarget.value);
+              const value = ev.currentTarget.value.slice(0, 2);
+              setCardStore('month', value);
+              ev.currentTarget.value = value;
             }}
-            value={cardStore.month}
           />
           <input
             class="default-input w-1/2"
             placeholder="YY"
             onInput={(ev) => {
-              setCardStore('year', ev.currentTarget.value);
+              const value = ev.currentTarget.value.slice(0, 2);
+              setCardStore('year', value);
+              ev.currentTarget.value = value;
             }}
-            value={cardStore.year}
           />
         </div>
       </div>

@@ -1,5 +1,7 @@
 import { cardStore } from '~/store/CardStore';
 
+const force0 = (str: string) => (str.length < 2 ? `0${str}` : str);
+
 function CardFront() {
   const number = createMemo(() => {
     const fullLength = 16;
@@ -14,12 +16,22 @@ function CardFront() {
   return (
     <div
       style={{ 'background-image': 'url(/images/bg-card-front.png)' }}
-      class="w-100 h-50 p-5 bg-cover rounded-lg text-white"
+      class="w-100 h-50 p-5 bg-cover rounded-lg text-white flex-(~ col) justify-between uppercase"
     >
-      <img src="/images/card-logo.svg" alt="card logo" />
-      <p>
-        {number}
-      </p>
+      <div>
+        <img src="/images/card-logo.svg" alt="card logo" />
+      </div>
+      <div>
+        <h1 class="text-3xl tracking-wide">{number}</h1>
+        <div class="flex justify-between">
+          <p>{cardStore.name || 'Jane Appleseed'}</p>
+          <p>
+            {force0(cardStore.month || '00')}
+            /
+            {force0(cardStore.year || '00')}
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
