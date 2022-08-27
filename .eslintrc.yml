@@ -15,14 +15,16 @@ plugins:
   - solid
   - only-warn
 rules:
-  react/react-in-jsx-scope: off
-  react/jsx-filename-extension: off
-  react/no-unknown-property: off
-  import/extensions: off
-  import/no-unresolved: off
-  import/no-extraneous-dependencies: off
-  eqeqeq: off
-  react/jsx-no-undef: off
-  no-undef: off
-  react/destructuring-assignment: off
-  react/require-default-props: off
+  react/no-unused-prop-types: 0
+  react/react-in-jsx-scope: 0
+  jsx-a11y/label-has-associated-control: 0
+  react/jsx-filename-extension: 0
+  react/no-unknown-property: 0
+  import/extensions: 0
+  import/no-unresolved: 0
+  import/no-extraneous-dependencies: 0
+  eqeqeq: 0
+  react/jsx-no-undef: 0
+  no-undef: 0
+  react/destructuring-assignment: 0
+  react/require-default-props: 0

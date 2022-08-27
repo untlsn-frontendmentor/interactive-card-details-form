@@ -7,22 +7,34 @@ import {
   presetWebFonts,
   presetIcons,
 } from 'unocss';
-// @ts-ignore
-import twConfig from './tailwind.config.cjs';
+import * as fs from 'fs';
+import * as path from 'path';
+import { theme } from './tailwind.config.cjs';
 
-export default defineConfig({
-  shortcuts: [
-    /* Example
-    ['name','uno-classes'],
-    */
-  ],
-  safelist: ['animate-spin'],
+const shortcuts: [string, string][] = [
+
+];
+
+const config = defineConfig({
+  shortcuts,
   // WebStorm don't support unocss config, so theme put in tailwind.config.cjs
   theme: {
-    ...twConfig.theme.extend,
+    ...theme.extend,
   },
   rules: [
-    ['flex-center', { display: 'flex', 'align-items': 'center', 'justify-content': 'center' }],
+    [/^((min|max)-)?size-(\d+)(.+)?$/, ([matcher]) => {
+      const [type, sizePart] = matcher.split('size-');
+      const sizeNum = Number(sizePart);
+      let size = sizePart;
+      if (sizeNum > 0) size = `${sizeNum / 4}rem`;
+      else if (sizePart.includes('/')) {
+        const [prev, suf] = sizePart.split('/');
+        const percent = 100 * Number(prev) / Number(suf);
+        size = `${percent}%`;
+      }
+
+      return { [`${type}width`]: size, [`${type}height`]: size };
+    }],
   ],
   variants: [
     (matcher) => {
@@ -58,15 +70,15 @@ export default defineConfig({
     presetWind(),
     presetWebFonts({
       fonts: {
-        sans: 'Roboto',
+        sans: 'Space Grotesk:500',
       },
     }),
     presetIcons({
       extraProperties: {
         display: 'inline-block',
-        'vertical-align': 'top',
         height: 'auto',
         'min-height': '1em',
+        'white-space': 'nowrap',
       },
     }),
   ],
@@ -75,3 +87,11 @@ export default defineConfig({
     transformerVariantGroup(),
   ],
 });
+
+// Create mock file for auto-complete
+fs.writeFileSync(
+  path.join(__dirname, '/src/assets/style/mock.css'),
+  shortcuts.map(([name]) => `.${name} {}`).join('\n'),
+);
+
+export default config;
